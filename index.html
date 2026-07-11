@@ -2,485 +2,508 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>Glass P2P - Room</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Glass P2P</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg-gradient: linear-gradient(145deg, #0b0c1a 0%, #1a1c3b 50%, #0f1123 100%);
-      --glass-bg: rgba(255, 255, 255, 0.05);
-      --glass-border: 1px solid rgba(255, 255, 255, 0.12);
-      --glass-shadow: 0 25px 45px rgba(0, 0, 0, 0.5);
-      --accent: #8b5cf6;
-      --accent2: #06b6d4;
-      --text: #e2e8f0;
-      --text-secondary: #94a3b8;
-      --bubble-sent: rgba(139, 92, 246, 0.25);
-      --bubble-received: rgba(255, 255, 255, 0.08);
-      --input-bg: rgba(0, 0, 0, 0.3);
-      --radius: 18px;
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --bg:#08080f;
+      --surface:rgba(255,255,255,0.04);
+      --surface2:rgba(255,255,255,0.07);
+      --border:rgba(255,255,255,0.08);
+      --accent:#8b5cf6;
+      --accent2:#06b6d4;
+      --text:#e2e8f0;
+      --muted:#64748b;
+      --green:#10b981;
+      --red:#ef4444;
+      --yellow:#f59e0b;
+      --sent:rgba(139,92,246,0.18);
+      --recv:rgba(255,255,255,0.06);
+      --r:16px;
     }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: var(--bg-gradient);
-      color: var(--text);
-      min-height: 100vh; display: flex; justify-content: center; align-items: flex-start;
-      padding: 16px; position: relative; overflow-x: hidden;
+    html,body{height:100%}
+    body{
+      font-family:'Vazirmatn','Segoe UI',system-ui,sans-serif;
+      background:var(--bg);color:var(--text);
+      overflow-x:hidden;
     }
-    body::before {
-      content: ''; position: fixed; top: -30%; left: -20%; width: 80%; height: 80%;
-      background: radial-gradient(circle, rgba(139, 92, 246, 0.15), transparent 70%);
-      filter: blur(100px); z-index: 0;
+    /* --- ambient glow --- */
+    body::before,body::after{
+      content:'';position:fixed;border-radius:50%;
+      filter:blur(120px);pointer-events:none;z-index:0;
     }
-    body::after {
-      content: ''; position: fixed; bottom: -30%; right: -20%; width: 90%; height: 90%;
-      background: radial-gradient(circle, rgba(6, 182, 212, 0.1), transparent 70%);
-      filter: blur(120px); z-index: 0;
+    body::before{top:-25%;right:-15%;width:55vw;height:55vh;background:rgba(139,92,246,.12)}
+    body::after{bottom:-25%;left:-15%;width:60vw;height:60vh;background:rgba(6,182,212,.08)}
+
+    .app{
+      position:relative;z-index:1;
+      max-width:520px;margin:0 auto;
+      padding:14px;
+      display:flex;flex-direction:column;gap:10px;
+      min-height:100vh;min-height:100dvh;
     }
-    .container {
-      width: 100%; max-width: 520px; position: relative; z-index: 1;
-      display: flex; flex-direction: column; gap: 16px; padding-bottom: 24px;
+
+    /* --- glass --- */
+    .g{
+      background:var(--surface);
+      backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+      border:1px solid var(--border);
+      border-radius:var(--r);padding:14px;
     }
-    .glass-card {
-      background: var(--glass-bg); backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px); border: var(--glass-border);
-      border-radius: var(--radius); box-shadow: var(--glass-shadow); padding: 18px;
+
+    /* --- header --- */
+    .hdr{text-align:center;padding:18px 14px}
+    .hdr h1{
+      font-size:1.45rem;font-weight:700;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      background-clip:text;
     }
-    h2 {
-      font-size: 1.5rem; font-weight: 600;
-      background: linear-gradient(to left, var(--accent), var(--accent2));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text; text-align: center; margin-bottom: 6px;
+    .hdr p{font-size:.8rem;color:var(--muted);margin-top:3px}
+
+    /* --- status badge --- */
+    .badge{
+      display:inline-flex;align-items:center;gap:5px;
+      padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:600;
     }
-    .btn {
-      border: none; background: linear-gradient(135deg, var(--accent), #6d28d9);
-      color: white; padding: 10px 16px; border-radius: 14px; font-weight: 600;
-      cursor: pointer; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 6px;
-      transition: 0.2s; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4); white-space: nowrap;
+    .b-off{background:rgba(100,116,139,.18);color:var(--muted)}
+    .b-wait{background:rgba(245,158,11,.15);color:var(--yellow)}
+    .b-on{background:rgba(16,185,129,.18);color:var(--green)}
+
+    /* --- inputs --- */
+    input[type=text]{
+      width:100%;padding:11px 14px;
+      background:rgba(0,0,0,.35);border:1px solid var(--border);
+      border-radius:12px;color:var(--text);font-size:1.05rem;
+      font-family:inherit;outline:none;
+      direction:ltr;text-align:center;letter-spacing:5px;
+      transition:border-color .2s,box-shadow .2s;
     }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(139, 92, 246, 0.6); }
-    .btn-outline {
-      background: transparent; border: 1px solid rgba(255,255,255,0.2);
-      box-shadow: none; color: #e2e8f0;
+    input[type=text]:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(139,92,246,.18)}
+    input[type=text]:disabled{opacity:.5}
+
+    textarea{
+      flex:1;padding:10px 14px;
+      background:rgba(0,0,0,.35);border:1px solid var(--border);
+      border-radius:12px;color:var(--text);font-size:.9rem;
+      font-family:inherit;outline:none;resize:none;
+      min-height:42px;max-height:110px;
+      transition:border-color .2s;
     }
-    .btn-outline:hover { background: rgba(255,255,255,0.05); }
-    .btn-danger {
-      background: linear-gradient(135deg, #ef4444, #b91c1c);
-      box-shadow: 0 4px 15px rgba(239,68,68,0.3);
+    textarea:focus{border-color:var(--accent)}
+
+    /* --- buttons --- */
+    .btn{
+      border:none;border-radius:12px;font-weight:600;
+      font-size:.9rem;font-family:inherit;cursor:pointer;
+      padding:11px 18px;transition:all .18s;white-space:nowrap;
     }
-    .icon-btn {
-      background: rgba(255,255,255,0.1); border: none; color: white;
-      width: 42px; height: 42px; border-radius: 12px; font-size: 1.4rem;
-      display: flex; align-items: center; justify-content: center; cursor: pointer;
-      backdrop-filter: blur(10px);
+    .btn-p{
+      background:linear-gradient(135deg,var(--accent),#6d28d9);
+      color:#fff;box-shadow:0 4px 14px rgba(139,92,246,.3);
     }
-    .icon-btn:hover { background: rgba(255,255,255,0.2); }
-    .status-badge {
-      display: inline-block; padding: 4px 12px; border-radius: 20px;
-      font-size: 0.9rem; font-weight: 600;
+    .btn-p:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(139,92,246,.45)}
+    .btn-p:disabled{opacity:.5;cursor:default;transform:none;box-shadow:none}
+    .btn-d{
+      background:linear-gradient(135deg,var(--red),#b91c1c);color:#fff;
+      box-shadow:0 4px 14px rgba(239,68,68,.25);
     }
-    .connected { background: rgba(16,185,129,0.25); color: #10b981; }
-    .disconnected { background: rgba(248,113,113,0.2); color: #f87171; }
-    input, textarea {
-      width: 100%; padding: 12px 14px; background: var(--input-bg);
-      border: 1px solid rgba(255,255,255,0.1); border-radius: 14px;
-      color: #f1f5f9; font-size: 0.95rem; outline: none;
-      backdrop-filter: blur(10px);
+    .btn-d:hover{transform:translateY(-1px)}
+    .ib{
+      width:42px;height:42px;flex-shrink:0;
+      border:none;background:var(--surface2);
+      border-radius:12px;color:var(--text);
+      font-size:1.15rem;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      transition:background .15s;
     }
-    input:focus, textarea:focus {
-      border-color: var(--accent); box-shadow: 0 0 0 3px rgba(139,92,246,0.2);
+    .ib:hover{background:rgba(255,255,255,.12)}
+    .ib:disabled{opacity:.4;cursor:default}
+
+    /* --- messages --- */
+    .msgs{
+      flex:1;overflow-y:auto;
+      display:flex;flex-direction:column;gap:7px;
+      padding:6px 4px;
+      min-height:280px;max-height:52vh;
+      scroll-behavior:smooth;
     }
-    textarea { resize: none; min-height: 44px; }
-    .messages-box {
-      height: 320px; overflow-y: auto; display: flex; flex-direction: column;
-      gap: 8px; padding: 8px 4px;
+    .bub{
+      max-width:82%;padding:10px 14px;
+      border-radius:16px;font-size:.88rem;line-height:1.65;
+      word-wrap:break-word;animation:pop .18s ease;
     }
-    .chat-bubble {
-      max-width: 85%; padding: 10px 14px; border-radius: 18px;
-      word-wrap: break-word; font-size: 0.9rem; line-height: 1.5;
-      animation: fadeIn 0.2s ease;
+    @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+    .b-sent{align-self:flex-end;background:var(--sent);border-bottom-left-radius:8px}
+    .b-recv{align-self:flex-start;background:var(--recv);border-bottom-right-radius:8px}
+    .b-sys{align-self:center;background:0 0;color:var(--muted);font-size:.76rem;font-style:italic}
+    .b-stk{background:0 0;font-size:2.8rem;padding:2px 4px}
+    .bub img,.bub video{max-width:100%;border-radius:10px;margin-top:6px;display:block}
+    .bub audio{width:100%;margin-top:6px;max-width:280px}
+    .dlink{color:var(--accent2);text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-top:6px;font-weight:500}
+
+    /* --- input area --- */
+    .inp-row{display:flex;gap:7px;align-items:flex-end}
+
+    /* --- stickers --- */
+    .stk-p{
+      display:none;flex-wrap:wrap;gap:4px;
+      padding:8px 0;max-height:130px;overflow-y:auto;
     }
-    @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
-    .sent { align-self: flex-end; background: var(--bubble-sent); border-bottom-left-radius: 12px; }
-    .received { align-self: flex-start; background: var(--bubble-received); border-bottom-right-radius: 12px; }
-    .system { align-self: center; background: transparent; color: #94a3b8; font-size:0.8rem; font-style:italic; }
-    .sticker-bubble { font-size: 3rem; background: transparent; padding: 4px; }
-    .file-attachment img, .file-attachment video, .file-attachment audio {
-      max-width: 100%; border-radius: 12px; margin-top: 6px; display: block;
+    .stk-p.open{display:flex}
+    .stk{
+      font-size:1.7rem;padding:5px 6px;
+      border:none;background:rgba(255,255,255,.04);
+      border-radius:10px;cursor:pointer;
+      transition:transform .12s,background .12s;
     }
-    progress {
-      width: 100%; height: 8px; border-radius: 10px; overflow: hidden;
-      appearance: none; background: rgba(255,255,255,0.1); margin-top: 8px;
+    .stk:hover{transform:scale(1.18);background:rgba(255,255,255,.1)}
+
+    /* --- progress --- */
+    progress{
+      width:100%;height:6px;border-radius:3px;
+      appearance:none;-webkit-appearance:none;
+      background:rgba(255,255,255,.08);overflow:hidden;
     }
-    progress::-webkit-progress-bar { background: rgba(255,255,255,0.1); border-radius:10px; }
-    progress::-webkit-progress-value { background: linear-gradient(90deg,var(--accent),var(--accent2)); border-radius:10px; }
-    progress::-moz-progress-bar { background: linear-gradient(90deg,var(--accent),var(--accent2)); border-radius:10px; }
-    .input-row { display: flex; gap: 8px; align-items: center; }
-    .sticker-panel {
-      display: none; flex-wrap: wrap; gap: 6px; padding: 10px 0;
-      max-height: 160px; overflow-y: auto; justify-content: center;
+    progress::-webkit-progress-bar{background:rgba(255,255,255,.08);border-radius:3px}
+    progress::-webkit-progress-value{
+      background:linear-gradient(90deg,var(--accent),var(--accent2));
+      border-radius:3px;transition:width .15s;
     }
-    .sticker-panel.open { display: flex; }
-    .sticker-btn {
-      background: rgba(255,255,255,0.08); border: none; font-size: 2rem;
-      padding: 6px; border-radius: 14px; cursor: pointer;
+    progress::-moz-progress-bar{
+      background:linear-gradient(90deg,var(--accent),var(--accent2));
+      border-radius:3px;
     }
-    .sticker-btn:hover { background: rgba(255,255,255,0.25); transform: scale(1.1); }
-    .error-message {
-      color: #f87171; font-size: 0.8rem; margin-top: 6px; display: none;
+
+    /* --- scrollbar --- */
+    ::-webkit-scrollbar{width:4px}
+    ::-webkit-scrollbar-track{background:0 0}
+    ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:4px}
+
+    /* --- err --- */
+    .err{color:var(--red);font-size:.78rem;margin-top:7px;display:none}
+    .err.show{display:block}
+
+    /* --- responsive --- */
+    @media(max-width:480px){
+      .app{padding:8px;gap:8px}
+      .g{padding:11px}
+      .msgs{min-height:220px;max-height:46vh}
+      .bub{max-width:88%;font-size:.84rem}
+      .hdr h1{font-size:1.25rem}
     }
-    .error-message.show { display: block; }
+    @media(min-height:800px){
+      .msgs{min-height:360px}
+    }
   </style>
 </head>
 <body>
-<div class="container">
-  <div class="glass-card" style="text-align:center;">
-    <h2>✨ Glass P2P Room</h2>
+
+<div class="app">
+
+  <div class="g hdr">
+    <h1>Glass P2P</h1>
+    <p>گفتگوی امن و مستقیم — بدون سرور</p>
   </div>
 
-  <!-- اتصال با کد مشترک -->
-  <div class="glass-card">
-    <div style="font-weight:600; margin-bottom:8px;">🔐 کد اتصال</div>
-    <div class="input-row">
-      <input type="text" id="roomCode" placeholder=" " autocomplete="off" style="flex:2;">
-      <button class="btn" id="connectBtn" style="flex:1;">اتصال</button>
-      <button class="btn btn-danger" id="disconnectBtn" style="display:none;">قطع</button>
+  <!-- connection -->
+  <div class="g">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <span style="font-weight:600;font-size:.92rem">اتصال</span>
+      <span class="badge b-off" id="st">Offline</span>
     </div>
-    <div style="display:flex; align-items:center; gap:10px; margin-top:10px;">
-      <span id="connStatus" class="status-badge disconnected">عدم اتصال</span>
-      <span id="errorMsg" class="error-message"></span>
+    <div style="display:flex;gap:8px">
+      <input type="text" id="ci" placeholder="کد اتاق" maxlength="20" autocomplete="off">
+      <button class="btn btn-p" id="cb">اتصال</button>
+      <button class="btn btn-d" id="db" style="display:none">قطع</button>
     </div>
+    <div class="err" id="er"></div>
   </div>
 
-  <!-- پیام‌ها -->
-  <div class="glass-card">
-    <div style="font-weight:600; margin-bottom:8px;">💬 پیام‌ها</div>
-    <div class="messages-box" id="messagesContainer"></div>
-    <div style="margin-top:8px;">
-      <div class="input-row">
-        <textarea id="msgInput" placeholder="پیام..." rows="1"></textarea>
-        <button class="icon-btn" id="attachBtn" title="ارسال فایل">＋</button>
-        <button class="icon-btn" id="stickerToggleBtn" title="استیکر">😀</button>
-        <button class="btn" id="sendMsgBtn">ارسال</button>
+  <!-- chat -->
+  <div class="g" style="flex:1;display:flex;flex-direction:column;min-height:0">
+    <div style="font-weight:600;font-size:.92rem;margin-bottom:6px">پیام‌ها</div>
+    <div class="msgs" id="mb"></div>
+    <div style="margin-top:6px">
+      <div class="inp-row">
+        <textarea id="mi" placeholder="پیام..." rows="1"></textarea>
+        <input type="file" id="fi" accept="image/*,audio/*,video/*,.pdf,.zip,.rar,.doc,.docx,.txt" style="display:none">
+        <button class="ib" id="ab" title="فایل">📎</button>
+        <button class="ib" id="sb" title="استیکر">😊</button>
+        <button class="btn btn-p" id="se" style="padding:10px 15px">ارسال</button>
       </div>
-      <div id="stickerPanel" class="sticker-panel"></div>
-      <progress id="progressBar" value="0" max="100" style="display:none;"></progress>
-      <small id="fileStatus" style="color:var(--text-secondary);"></small>
+      <div class="stk-p" id="sp"></div>
+      <div id="fp" style="display:none;margin-top:6px">
+        <progress id="pg" value="0" max="100"></progress>
+        <small id="pt" style="color:var(--muted);font-size:.72rem"></small>
+      </div>
     </div>
   </div>
+
 </div>
-<input type="file" id="hiddenFileInput" accept="image/*,audio/*,video/*" style="display:none;">
 
 <script src="https://unpkg.com/trystero@0.20.0/dist/trystero.min.js"></script>
 <script>
-  (function() {
-    // DOM refs
-    const roomCodeInput = document.getElementById('roomCode');
-    const connectBtn = document.getElementById('connectBtn');
-    const disconnectBtn = document.getElementById('disconnectBtn');
-    const connStatus = document.getElementById('connStatus');
-    const errorMsg = document.getElementById('errorMsg');
-    const msgInput = document.getElementById('msgInput');
-    const sendMsgBtn = document.getElementById('sendMsgBtn');
-    const messagesContainer = document.getElementById('messagesContainer');
-    const attachBtn = document.getElementById('attachBtn');
-    const hiddenFileInput = document.getElementById('hiddenFileInput');
-    const stickerToggleBtn = document.getElementById('stickerToggleBtn');
-    const stickerPanel = document.getElementById('stickerPanel');
-    const progressBar = document.getElementById('progressBar');
-    const fileStatus = document.getElementById('fileStatus');
+(function(){
+'use strict';
 
-    // State
-    let room = null;
-    let connected = false;
-    let connectTimeout = null;
-    let receivingMeta = null;
-    let receivingBuffer = [];
-    let receivedChunks = 0;
+/* ===== DOM ===== */
+const $ = id => document.getElementById(id);
+const ci=$('ci'),cb=$('cb'),db=$('db'),st=$('st'),er=$('er');
+const mb=$('mb'),mi=$('mi'),se=$('se'),fi=$('fi'),ab=$('ab');
+const sb=$('sb'),sp=$('sp'),fp=$('fp'),pg=$('pg'),pt=$('pt');
 
-    // Stickers
-    const stickers = ["😀","😂","🤣","😍","🥰","😘","😜","🤩","🤑","🤗","😎","🤔","😴","🥳","😇","🤠","❤️","🧡","💛","💚","💙","💜","🤎","🖤","🤍","💘","💝","💖","💗","🔥","⭐","✨","🎉","🎊","🎈","🌟","💥","🍕","🎵","🎶"];
-    function buildStickers() {
-      stickerPanel.innerHTML = '';
-      stickers.forEach(e => {
-        const b = document.createElement('button');
-        b.className = 'sticker-btn';
-        b.textContent = e;
-        b.onclick = () => { sendSticker(e); stickerPanel.classList.remove('open'); };
-        stickerPanel.appendChild(b);
-      });
-    }
-    buildStickers();
-    stickerToggleBtn.onclick = () => stickerPanel.classList.toggle('open');
+/* ===== state ===== */
+let room=null, connected=false, peers=0, timer=null;
+let fState=null;        // file receive buffer
+let sending=false;      // file send lock
 
-    // Helper functions
-    function setConnected(state) {
-      connected = state;
-      if (state) {
-        connStatus.textContent = 'متصل';
-        connStatus.className = 'status-badge connected';
-        disconnectBtn.style.display = 'inline-flex';
-        connectBtn.style.display = 'none';
-        roomCodeInput.disabled = true;
-        errorMsg.classList.remove('show');
-      } else {
-        connStatus.textContent = 'عدم اتصال';
-        connStatus.className = 'status-badge disconnected';
-        disconnectBtn.style.display = 'none';
-        connectBtn.style.display = 'inline-flex';
-        roomCodeInput.disabled = false;
+/* ===== stickers ===== */
+const emojis='😀😂🤣😍🥰😘😜🤩🤑🤗😎🤔😴🥳😇🤠😤😭😱🤦‍♂️❤️🧡💛💚💙💜🤎🖤💔💕💖🔥⭐✨🎉🎊💪👍👎👏🤝🎵🎶☕🍕🍿🎮📱💡🔑🏆🎯'.split(/(?=.)/u).filter(e=>e.length>0);
+
+// build sticker list (use a reliable split)
+const stickerList=['😀','😂','🤣','😍','🥰','😘','😜','🤩','🤑','🤗','😎','🤔','😴','🥳','😇','🤠','😤','😭','😱','🤦','❤️','🧡','💛','💚','💙','💜','🤎','🖤','💔','💕','💖','🔥','⭐','✨','🎉','🎊','💪','👍','👎','👏','🤝','🎵','🎶','☕','🍕'];
+
+stickerList.forEach(e=>{
+  const b=document.createElement('button');
+  b.className='stk';b.textContent=e;
+  b.onclick=()=>{sendStk(e);sp.classList.remove('open')};
+  sp.appendChild(b);
+});
+sb.onclick=()=>sp.classList.toggle('open');
+
+/* ===== helpers ===== */
+function setSt(txt,cls){st.textContent=txt;st.className='badge '+cls}
+function showErr(t){er.textContent=t;er.classList.add('show');setTimeout(()=>er.classList.remove('show'),6000)}
+function fmtSz(b){
+  if(b<1024)return b+' B';
+  if(b<1048576)return(b/1024).toFixed(1)+' KB';
+  return(b/1048576).toFixed(1)+' MB';
+}
+
+function addBub(cls,txt,html){
+  const d=document.createElement('div');
+  d.className='bub '+cls;
+  if(cls==='b-stk'){d.textContent=txt}
+  else if(html){d.innerHTML=txt+html}
+  else{d.textContent=txt}
+  mb.appendChild(d);mb.scrollTop=mb.scrollHeight;
+}
+
+function addFile(cls,name,blob){
+  const u=URL.createObjectURL(blob);
+  const ext=name.split('.').pop().toLowerCase();
+  const img=['jpg','jpeg','png','gif','webp','bmp','svg'].includes(ext);
+  const vid=['mp4','webm','mov','avi','mkv'].includes(ext);
+  const aud=['mp3','wav','ogg','aac','flac','m4a'].includes(ext);
+  const d=document.createElement('div');
+  d.className='bub '+cls;
+  let h='📁 '+name+'<br>';
+  if(img)h+=`<img src="${u}" alt="${name}" style="max-width:260px">`;
+  else if(vid)h+=`<video src="${u}" controls style="max-width:260px"></video>`;
+  else if(aud)h+=`<audio src="${u}" controls></audio>`;
+  else h+=`<a href="${u}" download="${name}" class="dlink">📥 دانلود</a>`;
+  d.innerHTML=h;mb.appendChild(d);mb.scrollTop=mb.scrollHeight;
+}
+
+function prog(show,txt){
+  fp.style.display=show?'block':'none';
+  if(txt)pt.textContent=txt;
+  if(!show){pg.value=0;pt.textContent=''}
+}
+
+/* ===== base64 helpers ===== */
+function ab2b64(buf){
+  const bytes=new Uint8Array(buf);
+  const ch=8192;let s='';
+  for(let i=0;i<bytes.length;i+=ch){
+    s+=String.fromCharCode.apply(null,bytes.subarray(i,i+ch));
+  }
+  return btoa(s);
+}
+function b642ab(b64){
+  const bin=atob(b64);
+  const a=new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++)a[i]=bin.charCodeAt(i);
+  return a;
+}
+
+/* ===== connect ===== */
+function connect(code){
+  if(room){try{room.leave()}catch(e){}room=null}
+  clearTimeout(timer);er.classList.remove('show');
+
+  try{
+    if(typeof trystero==='undefined') throw new Error('کتابخانه بارگذاری نشد');
+    const jn=trystero.torrent||trystero.joinRoom||trystero;
+    if(typeof jn!=='function') throw new Error('تابع اتصال یافت نشد');
+    room=jn({appId:'glass-p2p-v4'},code);
+  }catch(e){
+    showErr('خطا: '+e.message);return;
+  }
+
+  /* actions */
+  let sTxt,gTxt,sStk,gStk,sFm,gFm,sFc,gFc;
+  try{
+    [sTxt,gTxt]=room.makeAction('t');
+    [sStk,gStk]=room.makeAction('s');
+    [sFm,gFm]=room.makeAction('fm');
+    [sFc,gFc]=room.makeAction('fc');
+  }catch(e){
+    showErr('خطای کانال: '+e.message);
+    try{room.leave()}catch(e2){}
+    room=null;return;
+  }
+
+  /* store senders */
+  room._sTxt=sTxt;room._sStk=sStk;room._sFm=sFm;room._sFc=sFc;
+
+  /* peers */
+  room.onPeerJoin(()=>{
+    peers++;connected=true;
+    setSt(peers+' همتا','b-on');
+    addBub('b-sys','🔗 همتا متصل شد');
+    clearTimeout(timer);
+  });
+  room.onPeerLeave(()=>{
+    peers=Math.max(0,peers-1);
+    if(peers===0){connected=false;setSt('در انتظار…','b-wait');addBub('b-sys','❌ همتا قطع شد')}
+    else{setSt(peers+' همتا','b-on');addBub('b-sys','👋 یک همتا خارج شد')}
+  });
+
+  /* receive text */
+  gTxt((d)=>{
+    if(typeof d==='string') addBub('b-recv',d);
+  });
+
+  /* receive sticker */
+  gStk((d)=>{
+    if(typeof d==='string') addBub('b-stk',d);
+  });
+
+  /* receive file meta */
+  gFm((m)=>{
+    fState={name:m.n,size:m.sz,type:m.t,ch:m.c,buf:[],got:0};
+    prog(true,'دریافت: '+m.n+' ('+fmtSz(m.sz)+')');
+    addBub('b-sys','📥 دریافت "'+m.n+'" شروع شد');
+  });
+
+  /* receive file chunk */
+  gFc((d)=>{
+    if(!fState)return;
+    try{
+      const arr=b642ab(d.d);
+      fState.buf[d.i]=arr;
+      fState.got++;
+      const pct=Math.round(fState.got/fState.ch*100);
+      pg.value=pct;
+      pt.textContent=fState.got+'/'+fState.ch+' ('+pct+'%)';
+      if(fState.got===fState.ch){
+        const blob=new Blob(fState.buf,{type:fState.t});
+        addFile('b-recv',fState.name,blob);
+        prog(false);
+        addBub('b-sys','✅ "'+fState.name+'" دریافت شد');
+        fState=null;
       }
+    }catch(e){console.error('chunk err',e)}
+  });
+
+  /* UI */
+  setSt('در انتظار…','b-wait');
+  cb.style.display='none';db.style.display='inline-flex';
+  ci.disabled=true;
+  addBub('b-sys','⏳ وارد اتاق "'+code+'" شدید — منتظر همتا…');
+
+  timer=setTimeout(()=>{
+    if(!connected) addBub('b-sys','⏳ هنوز همتایی نیست. مطمئن شوید طرف مقابل هم همین کد را زده.');
+  },15000);
+}
+
+function disconnect(){
+  if(room){try{room.leave()}catch(e){}room=null}
+  clearTimeout(timer);
+  connected=false;peers=0;sending=false;fState=null;
+  setSt('Offline','b-off');
+  cb.style.display='inline-flex';db.style.display='none';
+  ci.disabled=false;prog(false);
+  addBub('b-sys','🚪 اتاق را ترک کردید');
+}
+
+/* ===== event: connect/disconnect ===== */
+cb.onclick=()=>{
+  const c=ci.value.trim();
+  if(!c){showErr('کد اتاق را وارد کنید');return}
+  connect(c);
+};
+ci.onkeydown=e=>{if(e.key==='Enter')cb.click()};
+db.onclick=disconnect;
+
+/* ===== send text ===== */
+function doSend(){
+  const t=mi.value.trim();
+  if(!t||!room||!connected)return;
+  room._sTxt(t);
+  addBub('b-sent',t);
+  mi.value='';mi.style.height='auto';
+}
+se.onclick=doSend;
+mi.onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doSend()}};
+mi.oninput=function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,110)+'px'};
+
+/* ===== send sticker ===== */
+function sendStk(e){
+  if(!room||!connected)return;
+  room._sStk(e);
+  addBub('b-stk',e);
+}
+
+/* ===== file send ===== */
+ab.onclick=()=>fi.click();
+fi.onchange=()=>{
+  const f=fi.files[0];
+  if(!f)return;
+  if(!room||!connected){alert('ابتدا متصل شوید');fi.value='';return}
+  if(sending){alert('در حال ارسال فایل قبلی');fi.value='';return}
+  doSendFile(f);
+  fi.value='';
+};
+
+async function doSendFile(file){
+  const CHUNK=16*1024;
+  const total=Math.ceil(file.size/CHUNK);
+  if(total>8000){alert('فایل بسیار بزرگ است');return}
+
+  sending=true;
+  room._sFm({n:file.name,sz:file.size,t:file.type||'application/octet-stream',c:total});
+  addBub('b-sys','📤 ارسال "'+file.name+'" ('+fmtSz(file.size)+')');
+  prog(true,'ارسال: '+file.name);
+
+  try{
+    for(let i=0;i<total;i++){
+      if(!connected){addBub('b-sys','❌ ارسال لغو شد');break}
+      const start=i*CHUNK;
+      const end=Math.min(start+CHUNK,file.size);
+      const buf=await file.slice(start,end).arrayBuffer();
+      room._sFc({i,d:ab2b64(buf)});
+      const pct=Math.round((i+1)/total*100);
+      pg.value=pct;
+      pt.textContent=(i+1)+'/'+total+' ('+pct+'%)';
+      if(i%12===11) await new Promise(r=>setTimeout(r,30));
     }
+    if(connected) addBub('b-sys','✅ "'+file.name+'" ارسال شد');
+  }catch(e){
+    addBub('b-sys','❌ خطا: '+e.message);
+  }
+  prog(false);sending=false;
+}
 
-    function showError(text) {
-      errorMsg.textContent = text;
-      errorMsg.classList.add('show');
-      setConnected(false);
-      if (room) {
-        room.leave();
-        room = null;
-      }
-    }
+/* ===== cleanup ===== */
+window.addEventListener('beforeunload',()=>{if(room)try{room.leave()}catch(e){}});
 
-    function addChatBubble(type, content, extraHtml = '') {
-      const div = document.createElement('div');
-      div.className = `chat-bubble ${type}`;
-      if (type === 'sticker') {
-        div.classList.add('sticker-bubble');
-        div.textContent = content;
-      } else if (extraHtml) {
-        div.innerHTML = content + extraHtml;
-      } else {
-        div.textContent = content;
-      }
-      messagesContainer.appendChild(div);
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }
-
-    function addFileMessage(type, fileName, url, isImg, isVid, isAud) {
-      const div = document.createElement('div');
-      div.className = `chat-bubble ${type} file-attachment`;
-      let inner = `📁 ${fileName}<br>`;
-      if (isImg) inner += `<img src="${url}" alt="${fileName}">`;
-      else if (isVid) inner += `<video src="${url}" controls></video>`;
-      else if (isAud) inner += `<audio src="${url}" controls></audio>`;
-      else inner += `<a href="${url}" download="${fileName}" style="color:#06b6d4;">📥 دانلود</a>`;
-      div.innerHTML = inner;
-      messagesContainer.appendChild(div);
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }
-
-    function showProgress(show) {
-      progressBar.style.display = show ? 'block' : 'none';
-      if (!show) progressBar.value = 0;
-    }
-
-    function formatSize(bytes) {
-      if (bytes < 1024) return bytes + ' B';
-      if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
-      return (bytes/(1024*1024)).toFixed(1) + ' MB';
-    }
-
-    // Connection management
-    function joinRoom(code) {
-      if (room) {
-        room.leave();
-        room = null;
-      }
-      clearTimeout(connectTimeout);
-      errorMsg.classList.remove('show');
-      setConnected(false);
-
-      try {
-        room = trystero.joinRoom({ appId: 'glass-p2p-room-1' }, code);
-      } catch (e) {
-        showError('خطا در ایجاد اتاق: ' + e.message);
-        return;
-      }
-
-      // Peer join handler
-      room.onPeerJoin((peerId) => {
-        setConnected(true);
-        addChatBubble('system', 'همتا متصل شد');
-        clearTimeout(connectTimeout);
-      });
-
-      room.onPeerLeave((peerId) => {
-        // Check if any peers left (the room may still have others)
-        // Since we only need one connection, if leave and no one else, set disconnected
-        room.getPeers().then(peers => {
-          if (peers.length === 0) {
-            setConnected(false);
-            addChatBubble('system', 'همتا قطع شد');
-          }
-        });
-      });
-
-      // Message handler
-      room.onMessage((data, peerId) => {
-        if (typeof data === 'string') {
-          try {
-            const obj = JSON.parse(data);
-            if (obj.type === 'sticker') {
-              addChatBubble('received', obj.emoji);
-              return;
-            } else if (obj.type === 'file-start') {
-              receivingMeta = obj;
-              receivingBuffer = new Array(obj.totalChunks);
-              receivedChunks = 0;
-              showProgress(true);
-              progressBar.value = 0;
-              fileStatus.textContent = `دریافت فایل: ${obj.name} (${formatSize(obj.size)})`;
-              addChatBubble('system', `دریافت فایل ${obj.name} شروع شد`);
-              return;
-            }
-          } catch (e) {}
-          addChatBubble('received', data);
-        } else if (data instanceof ArrayBuffer) {
-          if (!receivingMeta) return;
-          if (data.byteLength < 4) return;
-          const view = new DataView(data);
-          const chunkIndex = view.getUint32(0, false);
-          const chunk = new Uint8Array(data.slice(4));
-          if (chunkIndex < receivingBuffer.length) {
-            receivingBuffer[chunkIndex] = chunk;
-            receivedChunks++;
-            progressBar.value = (receivedChunks / receivingMeta.totalChunks) * 100;
-            fileStatus.textContent = `دریافت: ${receivedChunks}/${receivingMeta.totalChunks}`;
-            if (receivedChunks === receivingMeta.totalChunks) {
-              const blob = new Blob(receivingBuffer);
-              const url = URL.createObjectURL(blob);
-              const ext = receivingMeta.name.split('.').pop().toLowerCase();
-              const isImg = ['jpg','jpeg','png','gif','webp','bmp','svg'].includes(ext);
-              const isVid = ['mp4','webm','mov','avi','mkv'].includes(ext);
-              const isAud = ['mp3','wav','ogg','aac','flac','m4a'].includes(ext);
-              addFileMessage('received', receivingMeta.name, url, isImg, isVid, isAud);
-              receivingMeta = null;
-              receivingBuffer = [];
-              showProgress(false);
-              fileStatus.textContent = '';
-            }
-          }
-        }
-      });
-
-      // Timeout: if no peer after 20s, show error
-      connectTimeout = setTimeout(() => {
-        room.getPeers().then(peers => {
-          if (peers.length === 0) {
-            showError('خطا در اتصال: همتایی پیدا نشد. کد را بررسی کنید یا شبکه را عوض کنید.');
-            room.leave();
-            room = null;
-          }
-        });
-      }, 20000);
-    }
-
-    connectBtn.onclick = () => {
-      const code = roomCodeInput.value.trim();
-      if (!code) return;
-      joinRoom(code);
-    };
-
-    disconnectBtn.onclick = () => {
-      if (room) {
-        room.leave();
-        room = null;
-      }
-      clearTimeout(connectTimeout);
-      setConnected(false);
-      addChatBubble('system', 'شما اتاق را ترک کردید');
-      receivingMeta = null;
-      showProgress(false);
-    };
-
-    // Send text
-    sendMsgBtn.onclick = () => {
-      const msg = msgInput.value.trim();
-      if (!msg || !room || !connected) return;
-      room.send(msg);
-      addChatBubble('sent', msg);
-      msgInput.value = '';
-      msgInput.style.height = 'auto';
-    };
-    msgInput.onkeypress = (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        sendMsgBtn.click();
-      }
-    };
-    msgInput.addEventListener('input', function() {
-      this.style.height = 'auto';
-      this.style.height = Math.min(this.scrollHeight, 100) + 'px';
-    });
-
-    // Sticker
-    function sendSticker(emoji) {
-      if (!room || !connected) return;
-      room.send(JSON.stringify({ type: 'sticker', emoji }));
-      addChatBubble('sent', emoji);
-    }
-
-    // File attach
-    attachBtn.onclick = () => hiddenFileInput.click();
-    hiddenFileInput.onchange = () => {
-      const file = hiddenFileInput.files[0];
-      if (!file) return;
-      if (!room || !connected) {
-        alert('ابتدا به یک همتا متصل شوید');
-        hiddenFileInput.value = '';
-        return;
-      }
-      sendFile(file);
-      hiddenFileInput.value = '';
-    };
-
-    function sendFile(file) {
-      const chunkSize = 14 * 1024;
-      const totalChunks = Math.ceil(file.size / chunkSize);
-      let currentChunk = 0;
-
-      const meta = { type: 'file-start', name: file.name, size: file.size, totalChunks };
-      room.send(JSON.stringify(meta));
-      showProgress(true);
-      progressBar.value = 0;
-      fileStatus.textContent = `ارسال: 0/${totalChunks}`;
-      addChatBubble('system', `ارسال فایل ${file.name} (${formatSize(file.size)})`);
-
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const chunk = new Uint8Array(e.target.result);
-        const header = new ArrayBuffer(4);
-        new DataView(header).setUint32(0, currentChunk, false);
-        const combined = new Uint8Array(4 + chunk.byteLength);
-        combined.set(new Uint8Array(header), 0);
-        combined.set(chunk, 4);
-        room.send(combined.buffer);
-
-        currentChunk++;
-        progressBar.value = (currentChunk / totalChunks) * 100;
-        fileStatus.textContent = `ارسال: ${currentChunk}/${totalChunks}`;
-        if (currentChunk < totalChunks) {
-          readNext();
-        } else {
-          addChatBubble('sent', `📁 ${file.name}`);
-          showProgress(false);
-          fileStatus.textContent = '';
-        }
-      };
-      function readNext() {
-        const start = currentChunk * chunkSize;
-        const end = Math.min(start + chunkSize, file.size);
-        reader.readAsArrayBuffer(file.slice(start, end));
-      }
-      readNext();
-    }
-
-    // Cleanup
-    window.addEventListener('beforeunload', () => {
-      if (room) room.leave();
-    });
-  })();
+})();
 </script>
 </body>
 </html>
