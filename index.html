@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>انتقال مستقیم مدرن | Glass P2P</title>
+  <title>Glass P2P Room | کد 2580</title>
   <style>
     :root {
       --bg-gradient: linear-gradient(145deg, #0b0c1a 0%, #1a1c3b 50%, #0f1123 100%);
-      --glass-bg: rgba(255, 255, 255, 0.06);
+      --glass-bg: rgba(255, 255, 255, 0.05);
       --glass-border: 1px solid rgba(255, 255, 255, 0.12);
-      --glass-shadow: 0 25px 45px rgba(0, 0, 0, 0.4);
+      --glass-shadow: 0 25px 45px rgba(0, 0, 0, 0.5);
       --accent: #8b5cf6;
       --accent2: #06b6d4;
       --text: #e2e8f0;
@@ -20,13 +20,7 @@
       --radius: 18px;
       --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin:0; padding:0; box-sizing:border-box; }
     body {
       font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
       background: var(--bg-gradient);
@@ -39,15 +33,11 @@
       position: relative;
       overflow-x: hidden;
     }
-
-    /* دکور پس‌زمینه */
     body::before {
       content: '';
       position: fixed;
-      top: -30%;
-      left: -20%;
-      width: 80%;
-      height: 80%;
+      top: -30%; left: -20%;
+      width: 80%; height: 80%;
       background: radial-gradient(circle, rgba(139, 92, 246, 0.15), transparent 70%);
       filter: blur(100px);
       z-index: 0;
@@ -55,665 +45,479 @@
     body::after {
       content: '';
       position: fixed;
-      bottom: -30%;
-      right: -20%;
-      width: 90%;
-      height: 90%;
+      bottom: -30%; right: -20%;
+      width: 90%; height: 90%;
       background: radial-gradient(circle, rgba(6, 182, 212, 0.1), transparent 70%);
       filter: blur(120px);
       z-index: 0;
     }
-
     .container {
       width: 100%;
-      max-width: 500px;
+      max-width: 520px;
       position: relative;
       z-index: 1;
       display: flex;
       flex-direction: column;
       gap: 16px;
-      padding-bottom: 20px;
+      padding-bottom: 24px;
     }
-
-    /* کارت شیشه‌ای */
     .glass-card {
       background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
       border: var(--glass-border);
       border-radius: var(--radius);
       box-shadow: var(--glass-shadow);
-      padding: 20px;
+      padding: 18px;
       transition: var(--transition);
     }
-
-    /* تایپوگرافی */
     h2 {
-      font-size: 1.5rem;
-      font-weight: 600;
+      font-size: 1.5rem; font-weight: 600;
       background: linear-gradient(to left, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 6px;
-      text-align: center;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; margin-bottom: 6px; text-align: center;
     }
-    .subtitle {
-      text-align: center;
-      color: var(--text-secondary);
-      font-size: 0.8rem;
-      margin-bottom: 12px;
-    }
-
-    /* شناسه من */
-    .id-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .id-display {
-      background: rgba(0,0,0,0.4);
-      padding: 10px 14px;
-      border-radius: 14px;
-      font-family: monospace;
-      font-weight: bold;
-      font-size: 1rem;
-      word-break: break-all;
-      flex: 1;
-      text-align: center;
-      user-select: all;
-    }
+    .subtitle { text-align: center; color: var(--text-secondary); font-size: 0.8rem; }
     .btn {
       border: none;
       background: linear-gradient(135deg, var(--accent), #6d28d9);
-      color: white;
-      padding: 10px 18px;
-      border-radius: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      font-size: 0.9rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      color: white; padding: 10px 16px; border-radius: 14px;
+      font-weight: 600; cursor: pointer; font-size: 0.9rem;
+      display: inline-flex; align-items: center; gap: 6px;
       transition: var(--transition);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
       white-space: nowrap;
     }
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.5);
-    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(139, 92, 246, 0.6); }
     .btn-outline {
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.2);
-      box-shadow: none;
-      color: #e2e8f0;
+      background: transparent; border: 1px solid rgba(255,255,255,0.2);
+      box-shadow: none; color: #e2e8f0;
     }
-    .btn-outline:hover {
-      background: rgba(255,255,255,0.05);
-    }
+    .btn-outline:hover { background: rgba(255,255,255,0.05); }
     .btn-danger {
       background: linear-gradient(135deg, #ef4444, #b91c1c);
       box-shadow: 0 4px 15px rgba(239,68,68,0.3);
     }
-
-    /* وضعیت اتصال */
+    .icon-btn {
+      background: rgba(255,255,255,0.1); border: none; color: white;
+      width: 42px; height: 42px; border-radius: 12px; font-size: 1.4rem;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: var(--transition);
+      backdrop-filter: blur(10px);
+    }
+    .icon-btn:hover { background: rgba(255,255,255,0.2); }
     .status-badge {
-      display: inline-block;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      background: rgba(255,255,255,0.1);
+      display: inline-block; padding: 4px 12px; border-radius: 20px;
+      font-size: 0.8rem; background: rgba(255,255,255,0.1);
     }
-    .connected {
-      color: #10b981;
-      background: rgba(16,185,129,0.2);
-    }
-    .disconnected {
-      color: #f87171;
-      background: rgba(248,113,113,0.2);
-    }
+    .connected { color: #10b981; background: rgba(16,185,129,0.2); }
+    .disconnected { color: #f87171; background: rgba(248,113,113,0.2); }
 
-    /* ورودی‌ها */
     input, textarea {
-      width: 100%;
-      padding: 12px 14px;
-      background: var(--input-bg);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 14px;
-      color: #f1f5f9;
-      font-size: 0.95rem;
-      outline: none;
-      transition: var(--transition);
+      width: 100%; padding: 12px 14px;
+      background: var(--input-bg); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px; color: #f1f5f9; font-size: 0.95rem;
+      outline: none; transition: var(--transition);
       backdrop-filter: blur(10px);
     }
     input:focus, textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+      border-color: var(--accent); box-shadow: 0 0 0 3px rgba(139,92,246,0.2);
     }
-    textarea {
-      resize: vertical;
-      min-height: 70px;
-    }
+    textarea { resize: none; min-height: 44px; }
 
-    /* چت */
     .messages-box {
-      height: 300px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      padding: 8px 4px;
+      height: 320px; overflow-y: auto; display: flex;
+      flex-direction: column; gap: 8px; padding: 8px 4px;
     }
     .chat-bubble {
-      max-width: 85%;
-      padding: 10px 14px;
-      border-radius: 18px;
-      word-wrap: break-word;
-      position: relative;
-      font-size: 0.9rem;
-      line-height: 1.5;
+      max-width: 85%; padding: 10px 14px; border-radius: 18px;
+      word-wrap: break-word; font-size: 0.9rem; line-height: 1.5;
       animation: fadeIn 0.2s ease;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+    .sent { align-self: flex-end; background: var(--bubble-sent); border-bottom-left-radius: 12px; }
+    .received { align-self: flex-start; background: var(--bubble-received); border-bottom-right-radius: 12px; }
+    .system { align-self: center; background: transparent; color: #94a3b8; font-size:0.8rem; font-style:italic; }
+    .sticker-bubble { font-size: 3rem; background: transparent; padding: 4px; max-width: 90%; }
+    .file-attachment img, .file-attachment video, .file-attachment audio {
+      max-width: 100%; border-radius: 12px; margin-top: 6px; display: block;
     }
-    .sent {
-      align-self: flex-end;
-      background: var(--bubble-sent);
-      border-bottom-left-radius: 12px;
-    }
-    .received {
-      align-self: flex-start;
-      background: var(--bubble-received);
-      border-bottom-right-radius: 12px;
-    }
-    .system {
-      align-self: center;
-      background: transparent;
-      color: #94a3b8;
-      font-size: 0.8rem;
-      font-style: italic;
-      padding: 4px 8px;
-      max-width: 100%;
-      text-align: center;
-    }
-    .file-attachment img, .file-attachment video {
-      max-width: 100%;
-      border-radius: 12px;
-      margin-top: 6px;
-      cursor: pointer;
-    }
-    a.download-link {
-      color: var(--accent2);
-      text-decoration: none;
-      font-weight: 600;
-      display: inline-block;
-      margin-top: 4px;
-    }
-
-    /* نوار پیشرفت */
     progress {
-      width: 100%;
-      height: 8px;
-      border-radius: 10px;
-      overflow: hidden;
-      appearance: none;
-      background: rgba(255,255,255,0.1);
-      margin: 10px 0 5px;
+      width: 100%; height: 8px; border-radius: 10px; overflow: hidden;
+      appearance: none; background: rgba(255,255,255,0.1); margin-top: 8px;
     }
-    progress::-webkit-progress-bar {
-      background: rgba(255,255,255,0.1);
-      border-radius: 10px;
-    }
-    progress::-webkit-progress-value {
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      border-radius: 10px;
-      transition: width 0.2s ease;
-    }
-    progress::-moz-progress-bar {
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      border-radius: 10px;
-    }
+    progress::-webkit-progress-bar { background: rgba(255,255,255,0.1); border-radius:10px; }
+    progress::-webkit-progress-value { background: linear-gradient(90deg,var(--accent),var(--accent2)); border-radius:10px; }
+    progress::-moz-progress-bar { background: linear-gradient(90deg,var(--accent),var(--accent2)); border-radius:10px; }
 
-    .file-input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+    .input-row { display: flex; gap: 8px; align-items: center; }
+    .sticker-panel {
+      display: none; flex-wrap: wrap; gap: 6px; padding: 10px 0;
+      max-height: 160px; overflow-y: auto; justify-content: center;
     }
+    .sticker-panel.open { display: flex; }
+    .sticker-btn {
+      background: rgba(255,255,255,0.08); border: none; font-size: 2rem;
+      padding: 6px; border-radius: 14px; cursor: pointer; transition: 0.2s;
+    }
+    .sticker-btn:hover { background: rgba(255,255,255,0.25); transform: scale(1.1); }
 
-    /* دکمه‌های کنار هم */
-    .action-row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    /* Toast */
-    .toast {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.8);
-      backdrop-filter: blur(20px);
-      color: white;
-      padding: 10px 24px;
-      border-radius: 30px;
-      z-index: 999;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
-      font-size: 0.9rem;
-    }
-    .toast.show {
-      opacity: 1;
-    }
-
-    /* واکنش‌گرایی */
-    @media (max-width: 480px) {
-      .glass-card {
-        padding: 14px;
-      }
-      .btn {
-        padding: 8px 14px;
-        font-size: 0.8rem;
-      }
+    @media (max-width:480px) {
+      .glass-card { padding: 14px; }
+      .btn { padding: 8px 14px; font-size:0.8rem; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- هدر -->
-    <div class="glass-card" style="text-align: center; padding-bottom: 12px;">
-      <h2>✨ انتقال مستقیم شیشه‌ای</h2>
-      <p class="subtitle">ارسال سریع فایل و پیام، بدون واسطه</p>
-    </div>
-
-    <!-- کارت شناسه من -->
-    <div class="glass-card">
-      <div style="font-weight:600; margin-bottom:8px;">📡 شناسه من</div>
-      <div class="id-row">
-        <span class="id-display" id="myId">دریافت...</span>
-        <button class="btn btn-outline" id="copyIdBtn" title="کپی شناسه">📋</button>
-      </div>
-      <small style="color: var(--text-secondary); display:block; margin-top:6px;">برای اتصال، این شناسه را به طرف مقابل بدهید.</small>
-    </div>
-
-    <!-- اتصال به همتا -->
-    <div class="glass-card">
-      <div style="font-weight:600; margin-bottom:10px;">🔗 اتصال به دستگاه دیگر</div>
-      <div class="action-row">
-        <input type="text" id="peerIdInput" placeholder="شناسه مقصد را وارد کنید" style="flex:2;">
-        <button class="btn" id="connectBtn" style="flex:1;">اتصال</button>
-        <button class="btn btn-danger" id="disconnectBtn" style="display:none;">قطع</button>
-      </div>
-      <div id="connStatus" class="status-badge disconnected" style="margin-top:10px;">❌ متصل نیستید</div>
-    </div>
-
-    <!-- پیام‌ها -->
-    <div class="glass-card">
-      <div style="font-weight:600; margin-bottom:8px;">💬 پیام‌ها</div>
-      <div class="messages-box" id="messagesContainer"></div>
-      <div style="display:flex; gap:8px; margin-top:10px;">
-        <textarea id="msgInput" placeholder="متن پیام..." rows="1"></textarea>
-        <button class="btn" id="sendMsgBtn" style="align-self: flex-end;">ارسال</button>
-      </div>
-    </div>
-
-    <!-- ارسال فایل -->
-    <div class="glass-card">
-      <div style="font-weight:600; margin-bottom:8px;">📎 ارسال فایل (عکس/فیلم)</div>
-      <div class="file-input-group">
-        <input type="file" id="fileInput" accept="image/*,video/*">
-        <button class="btn" id="sendFileBtn">ارسال فایل</button>
-      </div>
-      <progress id="progressBar" value="0" max="100"></progress>
-      <small id="fileStatus" style="color: var(--text-secondary);"></small>
-    </div>
+<div class="container">
+  <div class="glass-card" style="text-align:center;">
+    <h2>✨ Glass Room</h2>
+    <p class="subtitle">با وارد کردن کد 2580 متصل شوید</p>
   </div>
 
-  <div id="toast" class="toast"></div>
+  <!-- اتصال با کد مشترک -->
+  <div class="glass-card">
+    <div style="font-weight:600; margin-bottom:8px;">🔐 کد اتصال</div>
+    <div class="input-row">
+      <input type="text" id="roomCode" placeholder="کد را وارد کنید (مثلاً 2580)" value="2580" style="flex:2;">
+      <button class="btn" id="connectBtn" style="flex:1;">اتصال</button>
+      <button class="btn btn-danger" id="disconnectBtn" style="display:none;">قطع</button>
+    </div>
+    <div id="connStatus" class="status-badge disconnected" style="margin-top:10px;">⏳ وارد نشده</div>
+    <small style="color:var(--text-secondary); display:block; margin-top:4px;">هر دو دستگاه کد یکسان را وارد و متصل شوند.</small>
+  </div>
 
-  <!-- PeerJS کتابخانه -->
-  <script src="https://unpkg.com/peerjs@1.5.1/dist/peerjs.min.js"></script>
-  <script>
-    (function() {
-      // ----- عناصر DOM -----
-      const myIdSpan = document.getElementById('myId');
-      const copyBtn = document.getElementById('copyIdBtn');
-      const peerIdInput = document.getElementById('peerIdInput');
-      const connectBtn = document.getElementById('connectBtn');
-      const disconnectBtn = document.getElementById('disconnectBtn');
-      const connStatus = document.getElementById('connStatus');
-      const msgInput = document.getElementById('msgInput');
-      const sendMsgBtn = document.getElementById('sendMsgBtn');
-      const messagesContainer = document.getElementById('messagesContainer');
-      const fileInput = document.getElementById('fileInput');
-      const sendFileBtn = document.getElementById('sendFileBtn');
-      const progressBar = document.getElementById('progressBar');
-      const fileStatus = document.getElementById('fileStatus');
-      const toast = document.getElementById('toast');
+  <!-- پیام‌ها -->
+  <div class="glass-card">
+    <div style="font-weight:600; margin-bottom:8px;">💬 پیام‌ها</div>
+    <div class="messages-box" id="messagesContainer"></div>
+    <div style="margin-top:8px;">
+      <div class="input-row">
+        <textarea id="msgInput" placeholder="پیام..." rows="1"></textarea>
+        <button class="icon-btn" id="attachBtn" title="ارسال فایل (عکس/موسیقی)">＋</button>
+        <button class="icon-btn" id="stickerToggleBtn" title="استیکر">😀</button>
+        <button class="btn" id="sendMsgBtn">ارسال</button>
+      </div>
+      <!-- پنل استیکر -->
+      <div id="stickerPanel" class="sticker-panel"></div>
+      <progress id="progressBar" value="0" max="100" style="display:none;"></progress>
+      <small id="fileStatus" style="color:var(--text-secondary);"></small>
+    </div>
+  </div>
+</div>
+<input type="file" id="hiddenFileInput" accept="image/*,audio/*,video/*" style="display:none;">
 
-      // ----- PeerJS -----
-      const peer = new Peer(); // سرور رایگان 0.peerjs.com
+<script src="https://cdn.jsdelivr.net/npm/bugout@0.0.13/dist/bugout.min.js"></script>
+<script>
+  (function() {
+    // ----- DOM references -----
+    const roomCodeInput = document.getElementById('roomCode');
+    const connectBtn = document.getElementById('connectBtn');
+    const disconnectBtn = document.getElementById('disconnectBtn');
+    const connStatus = document.getElementById('connStatus');
+    const msgInput = document.getElementById('msgInput');
+    const sendMsgBtn = document.getElementById('sendMsgBtn');
+    const messagesContainer = document.getElementById('messagesContainer');
+    const attachBtn = document.getElementById('attachBtn');
+    const hiddenFileInput = document.getElementById('hiddenFileInput');
+    const stickerToggleBtn = document.getElementById('stickerToggleBtn');
+    const stickerPanel = document.getElementById('stickerPanel');
+    const progressBar = document.getElementById('progressBar');
+    const fileStatus = document.getElementById('fileStatus');
 
-      let conn = null;
-      let receiveBuffer = [];
-      let receiveMeta = null;
+    // ----- State -----
+    let bugout = null;
+    let peersCount = 0;
+    let currentRoom = '';
+    let receivingFile = false;
+    let receiveMeta = null;
+    let receiveBuffer = [];
+    let receiveChunksReceived = 0;
 
-      // نمایش Toast
-      function showToast(message, duration = 2000) {
-        toast.textContent = message;
-        toast.classList.add('show');
-        clearTimeout(toast._timeout);
-        toast._timeout = setTimeout(() => toast.classList.remove('show'), duration);
-      }
-
-      // بروزرسانی وضعیت اتصال
-      function updateConnectionStatus(connected) {
-        if (connected) {
-          connStatus.textContent = '✅ متصل هستید';
-          connStatus.className = 'status-badge connected';
-          disconnectBtn.style.display = 'inline-flex';
-        } else {
-          connStatus.textContent = '❌ متصل نیستید';
-          connStatus.className = 'status-badge disconnected';
-          disconnectBtn.style.display = 'none';
-        }
-      }
-
-      // افزودن پیام به بخش چت
-      function addMessageToChat(type, content, extraHtml = '') {
-        const bubble = document.createElement('div');
-        bubble.className = `chat-bubble ${type}`;
-        if (type === 'system') {
-          bubble.innerHTML = `ℹ️ ${content}`;
-        } else {
-          bubble.textContent = content;
-        }
-        if (extraHtml) {
-          const wrapper = document.createElement('div');
-          wrapper.className = `chat-bubble ${type}`;
-          wrapper.textContent = content;
-          wrapper.innerHTML += extraHtml; // ممکن است نیاز به sanitize باشد اما امن است چون از خودمان تولید می‌شود
-          messagesContainer.appendChild(wrapper);
-        } else {
-          messagesContainer.appendChild(bubble);
-        }
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-      }
-
-      // نمایش فایل در چت
-      function addFileMessage(type, fileName, fileUrl, isImage, isVideo) {
-        const bubble = document.createElement('div');
-        bubble.className = `chat-bubble ${type} file-attachment`;
-        let inner = `📁 ${fileName}`;
-        if (isImage) {
-          inner += `<br><img src="${fileUrl}" alt="${fileName}" onclick="window.open('${fileUrl}')">`;
-        } else if (isVideo) {
-          inner += `<br><video src="${fileUrl}" controls style="max-width:100%; border-radius:12px;"></video>`;
-        } else {
-          inner += `<br><a href="${fileUrl}" download="${fileName}" class="download-link">📥 دانلود فایل</a>`;
-        }
-        bubble.innerHTML = inner;
-        messagesContainer.appendChild(bubble);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-      }
-
-      // دریافت شناسه شخصی
-      peer.on('open', (id) => {
-        myIdSpan.textContent = id;
-        showToast('شناسه شما آماده شد ✨');
+    // ----- Stickers list -----
+    const stickers = [
+      "😀","😂","🤣","😍","🥰","😘","😜","🤩","🤑","🤗",
+      "😎","🤔","😴","🥳","😇","🤠","❤️","🧡","💛","💚",
+      "💙","💜","🤎","🖤","🤍","💘","💝","💖","💗","🔥",
+      "⭐","✨","🎉","🎊","🎈","🌟","💥","🍕","🎵","🎶"
+    ];
+    function buildStickerPanel() {
+      stickerPanel.innerHTML = '';
+      stickers.forEach(emoji => {
+        const btn = document.createElement('button');
+        btn.className = 'sticker-btn';
+        btn.textContent = emoji;
+        btn.addEventListener('click', () => {
+          sendSticker(emoji);
+          stickerPanel.classList.remove('open');
+        });
+        stickerPanel.appendChild(btn);
       });
+    }
+    buildStickerPanel();
 
-      peer.on('error', (err) => {
-        showToast('خطای PeerJS: ' + err.message, 4000);
-        console.error(err);
-      });
+    // Toggle sticker panel
+    stickerToggleBtn.addEventListener('click', () => {
+      stickerPanel.classList.toggle('open');
+    });
 
-      // کپی شناسه
-      copyBtn.addEventListener('click', async () => {
-        const id = myIdSpan.textContent;
-        if (!id || id === 'دریافت...') return;
-        try {
-          await navigator.clipboard.writeText(id);
-          showToast('شناسه کپی شد! 📋');
-        } catch {
-          // Fallback
-          const ta = document.createElement('textarea');
-          ta.value = id;
-          document.body.appendChild(ta);
-          ta.select();
-          document.execCommand('copy');
-          document.body.removeChild(ta);
-          showToast('شناسه کپی شد.');
-        }
-      });
+    // ----- UI helpers -----
+    function updateConnectionStatus(connected, count = 0) {
+      if (connected) {
+        connStatus.textContent = `✅ متصل – ${count} همتا`;
+        connStatus.className = 'status-badge connected';
+        disconnectBtn.style.display = 'inline-flex';
+        connectBtn.style.display = 'none';
+        roomCodeInput.disabled = true;
+      } else {
+        connStatus.textContent = '⏳ وارد نشده';
+        connStatus.className = 'status-badge disconnected';
+        disconnectBtn.style.display = 'none';
+        connectBtn.style.display = 'inline-flex';
+        roomCodeInput.disabled = false;
+      }
+    }
 
-      // قطع اتصال
-      function closeConnection() {
-        if (conn) {
-          conn.close();
-          conn = null;
-        }
+    function addChatBubble(type, content, extraHtml = '') {
+      const bubble = document.createElement('div');
+      bubble.className = `chat-bubble ${type}`;
+      if (type === 'sticker') {
+        bubble.classList.add('sticker-bubble');
+        bubble.textContent = content;
+      } else if (extraHtml) {
+        bubble.innerHTML = content + extraHtml;
+      } else {
+        bubble.textContent = content;
+      }
+      messagesContainer.appendChild(bubble);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function addFileMessage(type, fileName, blobUrl, isImage, isVideo, isAudio) {
+      const bubble = document.createElement('div');
+      bubble.className = `chat-bubble ${type} file-attachment`;
+      let inner = `📁 ${fileName}<br>`;
+      if (isImage) inner += `<img src="${blobUrl}" alt="${fileName}">`;
+      else if (isVideo) inner += `<video src="${blobUrl}" controls></video>`;
+      else if (isAudio) inner += `<audio src="${blobUrl}" controls></audio>`;
+      else inner += `<a href="${blobUrl}" download="${fileName}" style="color:#06b6d4;">📥 دانلود</a>`;
+      bubble.innerHTML = inner;
+      messagesContainer.appendChild(bubble);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function showProgress(show) {
+      progressBar.style.display = show ? 'block' : 'none';
+      if (!show) progressBar.value = 0;
+    }
+
+    function formatSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
+      return (bytes/(1024*1024)).toFixed(1) + ' MB';
+    }
+
+    // ----- Connection management -----
+    function joinRoom(code) {
+      if (bugout) {
+        bugout.close();
+        bugout = null;
+      }
+      currentRoom = code;
+      try {
+        bugout = new Bugout(code);
+      } catch (e) {
         updateConnectionStatus(false);
-        peerIdInput.disabled = false;
-        connectBtn.disabled = false;
+        fileStatus.textContent = 'خطا در ایجاد اتصال';
+        return;
       }
 
-      disconnectBtn.addEventListener('click', () => {
-        closeConnection();
-        showToast('اتصال قطع شد.');
-        addMessageToChat('system', 'شما اتصال را قطع کردید.');
+      bugout.on("connections", (addr, count) => {
+        peersCount = count;
+        updateConnectionStatus(true, count);
+        if (count > 0) {
+          addChatBubble('system', `یک دستگاه به اتاق پیوست (${count} همتا)`);
+        }
       });
 
-      // مدیریت اتصال ورودی
-      peer.on('connection', (incomingConn) => {
-        if (conn) {
-          // اگر اتصال فعالی داریم، اتصال جدید را رد کنیم
-          incomingConn.close();
-          showToast('اتصال جدید رد شد – قبلاً متصل هستید.');
-          return;
-        }
-        conn = incomingConn;
-        setupConnection();
-        showToast('دستگاه دیگری به شما متصل شد 🤝');
+      bugout.on("left", (addr) => {
+        peersCount = Math.max(0, peersCount - 1);
+        updateConnectionStatus(true, peersCount);
+        addChatBubble('system', 'یک همتا اتاق را ترک کرد');
       });
 
-      // اتصال به همتا با کلیک
-      connectBtn.addEventListener('click', () => {
-        const remoteId = peerIdInput.value.trim();
-        if (!remoteId) {
-          showToast('شناسه مقصد را وارد کنید.');
-          return;
-        }
-        if (conn) {
-          conn.close();
-          conn = null;
-        }
-        conn = peer.connect(remoteId, { reliable: true });
-        setupConnection();
-      });
-
-      // تنظیم رویدادهای اتصال داده
-      function setupConnection() {
-        updateConnectionStatus(false); // در حال اتصال...
-        connStatus.textContent = '⏳ در حال برقراری...';
-        connStatus.className = 'status-badge';
-
-        conn.on('open', () => {
-          updateConnectionStatus(true);
-          showToast('اتصال برقرار شد ✅');
-          addMessageToChat('system', 'اتصال برقرار شد.');
-          peerIdInput.disabled = true;
-          connectBtn.disabled = true;
-        });
-
-        conn.on('data', (data) => {
-          handleIncomingData(data);
-        });
-
-        conn.on('close', () => {
-          updateConnectionStatus(false);
-          addMessageToChat('system', 'اتصال از راه دور قطع شد.');
-          peerIdInput.disabled = false;
-          connectBtn.disabled = false;
-          conn = null;
-        });
-
-        conn.on('error', (err) => {
-          showToast('خطای اتصال: ' + err, 4000);
-          addMessageToChat('system', 'خطا در اتصال.');
-          updateConnectionStatus(false);
-        });
-      }
-
-      // پردازش داده دریافتی
-      function handleIncomingData(data) {
-        // متن ساده
-        if (typeof data === 'string') {
-          addMessageToChat('received', data);
-        }
-        // شروع فایل
-        else if (data.type === 'file-start') {
-          receiveMeta = data;
-          receiveBuffer = new Array(data.totalChunks);
-          addMessageToChat('system', `دریافت فایل: ${data.name} (${formatSize(data.size)})`);
-          fileStatus.textContent = 'در حال دریافت...';
-        }
-        // تکه فایل
-        else if (data.type === 'file-chunk') {
-          if (!receiveMeta || data.id !== receiveMeta.id) return;
-          receiveBuffer[data.index] = new Uint8Array(data.chunk);
-          const receivedCount = receiveBuffer.filter(Boolean).length;
-          progressBar.value = (receivedCount / receiveMeta.totalChunks) * 100;
-          fileStatus.textContent = `دریافت: ${receivedCount}/${receiveMeta.totalChunks}`;
-
-          if (receivedCount === receiveMeta.totalChunks) {
-            const blob = new Blob(receiveBuffer, { type: 'application/octet-stream' });
-            const url = URL.createObjectURL(blob);
-            const ext = receiveMeta.name.split('.').pop().toLowerCase();
-            const isVideo = ['mp4','webm','mov','avi','mkv'].includes(ext);
-            const isImage = ['jpg','jpeg','png','gif','webp','bmp','svg'].includes(ext);
-
-            addFileMessage('received', receiveMeta.name, url, isImage, isVideo);
-            progressBar.value = 0;
-            fileStatus.textContent = '';
-            receiveMeta = null;
-            receiveBuffer = [];
-            showToast('فایل دریافت شد 📩');
+      bugout.on("message", (address, data) => {
+        if (typeof data === "string") {
+          // Try parse JSON
+          try {
+            const obj = JSON.parse(data);
+            if (obj.type === "sticker") {
+              addChatBubble('received', obj.emoji, '');
+              return;
+            } else if (obj.type === "file-start") {
+              receiveMeta = obj;
+              receiveBuffer = new Array(obj.totalChunks);
+              receiveChunksReceived = 0;
+              receivingFile = true;
+              showProgress(true);
+              progressBar.value = 0;
+              fileStatus.textContent = `دریافت فایل: ${obj.name} (${formatSize(obj.size)})`;
+              addChatBubble('system', `دریافت ${obj.name} شروع شد...`);
+              return;
+            }
+          } catch (e) { /* plain text */ }
+          addChatBubble('received', data);
+        } else if (data instanceof ArrayBuffer) {
+          if (!receivingFile || !receiveMeta) return;
+          const view = new DataView(data);
+          if (data.byteLength < 4) return;
+          const chunkIndex = view.getUint32(0, false); // big-endian
+          const chunk = new Uint8Array(data.slice(4));
+          if (chunkIndex < receiveBuffer.length) {
+            receiveBuffer[chunkIndex] = chunk;
+            receiveChunksReceived++;
+            progressBar.value = (receiveChunksReceived / receiveMeta.totalChunks) * 100;
+            fileStatus.textContent = `دریافت: ${receiveChunksReceived}/${receiveMeta.totalChunks}`;
+            if (receiveChunksReceived === receiveMeta.totalChunks) {
+              const blob = new Blob(receiveBuffer, { type: 'application/octet-stream' });
+              const url = URL.createObjectURL(blob);
+              const ext = receiveMeta.name.split('.').pop().toLowerCase();
+              const isVideo = ['mp4','webm','mov','avi','mkv'].includes(ext);
+              const isImage = ['jpg','jpeg','png','gif','webp','bmp','svg'].includes(ext);
+              const isAudio = ['mp3','wav','ogg','aac','flac','m4a'].includes(ext);
+              addFileMessage('received', receiveMeta.name, url, isImage, isVideo, isAudio);
+              receivingFile = false;
+              receiveMeta = null;
+              receiveBuffer = [];
+              showProgress(false);
+              fileStatus.textContent = '';
+            }
           }
         }
+      });
+
+      updateConnectionStatus(false);
+      fileStatus.textContent = 'تلاش برای اتصال...';
+    }
+
+    connectBtn.addEventListener('click', () => {
+      const code = roomCodeInput.value.trim();
+      if (!code) return;
+      joinRoom(code);
+    });
+
+    disconnectBtn.addEventListener('click', () => {
+      if (bugout) {
+        bugout.close();
+        bugout = null;
       }
+      updateConnectionStatus(false);
+      addChatBubble('system', 'شما از اتاق خارج شدید.');
+      receivingFile = false;
+      receiveMeta = null;
+      showProgress(false);
+    });
 
-      // ارسال پیام متنی
-      sendMsgBtn.addEventListener('click', () => {
-        const msg = msgInput.value.trim();
-        if (!msg) return;
-        if (!conn || !conn.open) {
-          showToast('ابتدا متصل شوید.');
-          return;
-        }
-        conn.send(msg);
-        addMessageToChat('sent', msg);
-        msgInput.value = '';
-        msgInput.style.height = 'auto'; // reset
-      });
-
-      // ارسال با Enter
-      msgInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          sendMsgBtn.click();
-        }
-      });
-
-      // ارسال فایل
-      sendFileBtn.addEventListener('click', () => {
-        const file = fileInput.files[0];
-        if (!file) {
-          showToast('فایلی انتخاب نشده.');
-          return;
-        }
-        if (!conn || !conn.open) {
-          showToast('ابتدا متصل شوید.');
-          return;
-        }
-
-        const chunkSize = 16 * 1024;
-        const totalChunks = Math.ceil(file.size / chunkSize);
-        let currentChunk = 0;
-        const fileId = Date.now().toString();
-
-        // ارسال اطلاعات اولیه
-        conn.send({
-          type: 'file-start',
-          id: fileId,
-          name: file.name,
-          size: file.size,
-          totalChunks: totalChunks
-        });
-
-        const reader = new FileReader();
-        progressBar.value = 0;
-
-        reader.onload = (e) => {
-          const chunk = e.target.result;
-          conn.send({
-            type: 'file-chunk',
-            id: fileId,
-            chunk: Array.from(new Uint8Array(chunk)),
-            index: currentChunk
-          });
-          currentChunk++;
-          progressBar.value = (currentChunk / totalChunks) * 100;
-          fileStatus.textContent = `ارسال: ${currentChunk}/${totalChunks}`;
-
-          if (currentChunk < totalChunks) {
-            readNextChunk();
-          } else {
-            // اتمام ارسال
-            addMessageToChat('sent', `📁 فایل ارسال شد: ${file.name}`);
-            progressBar.value = 0;
-            fileStatus.textContent = '';
-            fileInput.value = '';
-            showToast('فایل ارسال شد ✅');
-          }
-        };
-
-        function readNextChunk() {
-          const start = currentChunk * chunkSize;
-          const end = Math.min(start + chunkSize, file.size);
-          reader.readAsArrayBuffer(file.slice(start, end));
-        }
-
-        readNextChunk();
-      });
-
-      // فرمت‌کننده حجم
-      function formatSize(bytes) {
-        if (bytes < 1024) return bytes + ' B';
-        if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
-        return (bytes/(1024*1024)).toFixed(1) + ' MB';
+    // ----- Send text message -----
+    sendMsgBtn.addEventListener('click', () => {
+      const msg = msgInput.value.trim();
+      if (!msg || !bugout || peersCount === 0) return;
+      bugout.send(msg);
+      addChatBubble('sent', msg);
+      msgInput.value = '';
+      msgInput.style.height = 'auto';
+    });
+    msgInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMsgBtn.click();
       }
+    });
+    msgInput.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+    });
 
-      // پاکسازی وضعیت هنگام ترک صفحه
-      window.addEventListener('beforeunload', () => {
-        if (conn) conn.close();
-      });
+    // ----- Sticker send -----
+    function sendSticker(emoji) {
+      if (!bugout || peersCount === 0) return;
+      const payload = JSON.stringify({ type: "sticker", emoji: emoji });
+      bugout.send(payload);
+      addChatBubble('sent', emoji);
+    }
 
-      // تغییر ارتفاع خودکار textarea
-      msgInput.addEventListener('input', function() {
-        this.style.height = 'auto';
-        this.style.height = Math.min(this.scrollHeight, 120) + 'px';
-      });
+    // ----- Attach file (+) button -----
+    attachBtn.addEventListener('click', () => {
+      hiddenFileInput.click();
+    });
+    hiddenFileInput.addEventListener('change', () => {
+      const file = hiddenFileInput.files[0];
+      if (!file) return;
+      if (!bugout || peersCount === 0) {
+        alert('ابتدا به یک همتا متصل شوید.');
+        return;
+      }
+      sendFile(file);
+      hiddenFileInput.value = ''; // allow re-selecting same file
+    });
 
-    })();
-  </script>
+    function sendFile(file) {
+      const chunkSize = 14 * 1024; // slightly smaller to account for header
+      const totalChunks = Math.ceil(file.size / chunkSize);
+      let currentChunk = 0;
+      const fileId = Date.now().toString(); // not strictly needed now
+      // Send metadata
+      const meta = {
+        type: "file-start",
+        name: file.name,
+        size: file.size,
+        totalChunks: totalChunks
+      };
+      bugout.send(JSON.stringify(meta));
+      showProgress(true);
+      progressBar.value = 0;
+      fileStatus.textContent = `ارسال: 0/${totalChunks}`;
+      addChatBubble('system', `ارسال فایل: ${file.name} (${formatSize(file.size)})`);
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const chunk = new Uint8Array(e.target.result);
+        // Prepare buffer with 4-byte index header
+        const header = new ArrayBuffer(4);
+        new DataView(header).setUint32(0, currentChunk, false);
+        const combined = new Uint8Array(4 + chunk.byteLength);
+        combined.set(new Uint8Array(header), 0);
+        combined.set(chunk, 4);
+        bugout.send(combined.buffer);
+
+        currentChunk++;
+        progressBar.value = (currentChunk / totalChunks) * 100;
+        fileStatus.textContent = `ارسال: ${currentChunk}/${totalChunks}`;
+        if (currentChunk < totalChunks) {
+          readNext();
+        } else {
+          addChatBubble('sent', `📁 ${file.name}`);
+          showProgress(false);
+          fileStatus.textContent = '';
+        }
+      };
+      function readNext() {
+        const start = currentChunk * chunkSize;
+        const end = Math.min(start + chunkSize, file.size);
+        reader.readAsArrayBuffer(file.slice(start, end));
+      }
+      readNext();
+    }
+
+    // پاک‌سازی هنگام خروج از صفحه
+    window.addEventListener('beforeunload', () => {
+      if (bugout) bugout.close();
+    });
+
+    // مقدار اولیه (ورود سریع با 2580)
+    // (اختیاری) برای تست می‌توانید با کلیک روی دکمه اتصال پیش‌فرض متصل شوید
+    // یا کاربر دستی وارد می‌کند.
+  })();
+</script>
 </body>
 </html>
